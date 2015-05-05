@@ -1,0 +1,187 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    background-image: -webkit-linear-gradient(-90.48019824830001deg, #183152 0, #183152 41%, #375D81 66%, #84b5e0 88%, #C4D7ED 100%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 1) 100%, rgba(0, 0, 0, 0) 100%, #E1E6FA 100%);
+    background-image: -moz-linear-gradient(180.4801982483deg, #183152 0, #183152 41%, #375D81 66%, #84b5e0 88%, #C4D7ED 100%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 1) 100%, rgba(0, 0, 0, 0) 100%, #E1E6FA 100%);
+    background-image: linear-gradient(180.4801982483deg, #183152 0, #183152 41%, #375D81 66%, #84b5e0 88%, #C4D7ED 100%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 1) 100%, rgba(0, 0, 0, 0) 100%, #E1E6FA 100%);
+    background-position: 50% 50%;
+    margin: 90px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: small;
+
+}
+
+ul {
+    list-style-type: none;
+
+}
+
+li {
+    overflow: auto;
+}
+
+.message-removed {
+    opacity: 0.2;
+}
+
+#section {
+    width: 800px;
+}
+
+.freespace {
+    height: 20px;
+}
+
+text.username {
+    border-radius: 15px;
+    height: 40px;
+    width: 243px;
+}
+
+#chat {
+    display: block;
+    height: 471px;
+    color: #FFFFFF;
+    background: #01140B;
+    padding: 15px;
+    margin: 10px, 10px, 10px, 10px;
+    width: 400px;
+    border-radius: 15px;
+}
+
+.conversation {
+    height: 270px;
+    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: bottom;
+    border-radius: 5px;
+    color: Black;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: small;
+    background: #FFFFFF;
+
+    border-radius: 5px;
+    border: 2px solid Black;
+}
+
+.chatHead {
+    text-align: center;
+}
+
+.my {
+    width: 51%;
+    float: right;
+    background: #6495ED;
+    border-radius: 5px;
+    padding: 1px;
+    border: 2px solid Black;
+    margin: 3px 3px 3px 49%;
+}
+
+.other {
+    width: 51%;
+    float: left;
+    background: Grey;
+    border-radius: 5px;
+    padding: 1px;
+    border: 2px solid Black;
+
+}
+
+.myInfo {
+    margin: 3px;
+    margin-left: 100%;
+    width: 40%;
+    float: right;
+    background: #B0C4DE;
+    border-radius: 5px;
+    padding: 1px;
+    border: 2px solid Black;
+    font-size: 80%;
+}
+
+.otherInfo {
+    margin: 3px;
+    margin-right: 100%;
+    width: 40%;
+    float: left;
+    background: #B0C4DE;
+    border-radius: 5px;
+    padding: 1px;
+    border: 2px solid Black;
+    font-size: 80%;
+}
+
+.input {
+    color: Black;
+    resize: none;
+    width: 100%;
+    padding: 1px;
+    border: 2px solid Black;
+}
+
+.btn-primary {
+    background: #375D81;
+    width: 100px;
+    height: 30px;
+    margin: 5px;
+    float: right;
+}
+
+.glyphicon-edit, .glyphicon-trash {
+    float: right;
+    color: white;
+    background: #042047;
+    padding: 2px;
+    margin: 1.5px;
+    border: 1px solid Black;
+}
+
+.glyphicon-refresh {
+    color: white;
+    background: #375D81;
+    padding: 15px;
+    margin: 2.5px;
+    border: 1px solid Black;
+}
+
+.glyphicon-exclamation-sign {
+    color: Red;
+    height: 15;
+    width: 15;
+    display: none;
+}
+
+.username {
+    display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    padding: 10px 20px;
+    border: 1px solid #b7b7b7;
+    -webkit-border-radius: 3px;
+    font: normal 16px/normal "Times New Roman", Times, serif;
+    color: Black;
+    -o-text-overflow: clip;
+    background: rgba(252, 252, 252, 1);
+    -webkit-box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2) inset;
+    -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+    -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+    -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+
+}
+
+#inputSpere {
+    height: 70px;
+    width: 300px;
+}
+
+.message-removed .message-remove, .message-removed .message-edit,
+.other .message-remove, .other .message-edit {
+    display: none;
+}
+
+
+
