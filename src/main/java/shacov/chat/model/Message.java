@@ -5,17 +5,23 @@ package shacov.chat.model;
  */
 public class Message {
   private String user;
-  private int id;
+  private String id;
   private String text;
   private boolean removed;
-  Message(){this.removed = false;}
-  Message(String user, int id, String message){
+  public Message(){this.removed = false;}
+  public Message(String user, String id, String message){
     this.user = user;
     this.id = id;
     this.text = message;
     this.removed = false;
   }
 
+  public Message(String user, String id, String message, boolean removed){
+    this.user = user;
+    this.id = id;
+    this.text = message;
+    this.removed = removed;
+  }
 //  Message(String message){
 //    this.id = Integer.parseInt(message.substring(message.indexOf("\"id\":\"")+6, message.indexOf("\",\"user\":\"")));
 //    this.user = message.substring(message.indexOf("\",\"user\":\"") + 10, message.indexOf("\",\"text\":\""));
@@ -25,17 +31,13 @@ public class Message {
 
   public String getName(){return this.user;}
 
-  public int getId(){return this.id;}
+  public String getId(){return this.id;}
 
   public String getMessage(){return this.text;}
 
   public void setName(String name){ this.user = name;}
 
-  public void getId(int id){this.id = id;}
-
-  public void getMessage(String message){ this.text = message;}
-
-  public void setId(int id) {
+  public void setId(String id) {
     this.id = id;
   }
 

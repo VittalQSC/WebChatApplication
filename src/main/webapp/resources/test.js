@@ -30,10 +30,10 @@ function placeMessage(msg) {
 window.state = {
 	messages: [],
 	user: "username-" + uniqueId(),
-	mainUrl : 'http://192.168.0.101:999/chat',
+	mainUrl : 'chat',
 	token : 'TE11EN'
 };
-
+//http://localhost:8080/chat
 function toQuery(data) {
 	var tail = [];
 	for (var key in data) {
@@ -58,12 +58,14 @@ function ajax(method, url, data, success, error) {
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4) {
 			if (200 <= xhr.status && xhr.status < 300) {
+				connectToServer();
 				var data;
 				if (xhr.responseText.length > 0) {
 					data = JSON.parse(xhr.responseText);
 				}
 				success(data)
 			} else {
+				disconnectToServer();
 				//error
 			}
 		}
@@ -71,6 +73,20 @@ function ajax(method, url, data, success, error) {
 
 	xhr.send(JSON.stringify(data));
 }
+
+
+function connectToServer(){
+	var status = document.getElementById("server-status");
+	status.classList.remove("label-danger");
+	status.classList.add("label-success");
+}
+
+function disconnectToServer(){
+	var status = document.getElementById("server-status");
+	status.classList.remove("label-success");
+	status.classList.add("label-danger");
+}
+
 
 function addMessage(message) {
 	state.messages.push(message);
