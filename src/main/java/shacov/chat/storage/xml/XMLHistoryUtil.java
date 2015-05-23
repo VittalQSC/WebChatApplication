@@ -151,6 +151,8 @@ public final class XMLHistoryUtil {
 
       }
 
+     // messageToRemove.getParentNode().removeChild(messageToRemove);
+
       Transformer transformer = getTransformer();
 
       DOMSource source = new DOMSource(document);

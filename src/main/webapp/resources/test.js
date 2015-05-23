@@ -162,13 +162,30 @@ function loadMessages() {
 	ajax("GET", state.mainUrl, {token: state.token}, function(data) {
 		updateWithScroll(function() {
 			var messages = data.messages;
+
 			for (var index in messages) {
 				handleMessage( messages[index] );
 			}
 		});
 	});
 }
-
+/* NOT READY
+function markRemovedMessages(messages) {
+	for (var iOld in state.messages) { // messages[index]
+		var removed = true;
+		for (var iNew in messages) { // state.messages[i]
+			if(messages[iNew].id == state.messages[iOld].id) {
+				removed = false;
+				break;
+			}
+		}
+		if(removed) {
+			markAsRemoved(state.messages[iOld]);
+			updateMessage(iOld, state.message[iOld]);
+		}
+	}
+}
+*/
 function messageTextInput() {
 	return document.getElementById("new-message");
 }
