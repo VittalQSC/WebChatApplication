@@ -16,6 +16,7 @@ import shacov.chat.storage.xml.XMLHistoryUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -126,6 +127,31 @@ public class ChatServlet extends HttpServlet {
       Object id = json.get("id");
       XMLHistoryUtil.removeData((String)id);
     }catch (Exception e) {}
+  }
+
+  @Override
+  protected long getLastModified(HttpServletRequest request) {
+    logger.info("getLastModified");
+
+    String token = request.getParameter(TOKEN);
+    logger.info("Token " + token);
+
+    long lastUpdate = -1;
+    try {
+      if (token != null && !"".equals(token)) {
+        int index = getIndex(token);
+        logger.info("Index " + index);
+        List<Message> messages = XMLHistoryUtil.getSubMessagesByIndex(index);
+        for (Message message : messages) {
+          long time = 1000 * message.getUpdatedAt().getTime();
+          if(time > lastUpdate)
+            lastUpdate = time;
+        }
+      }
+    } catch (IOException | SAXException | ParserConfigurationException e) {
+      lastUpdate = -1;
+    }
+    return lastUpdate;
   }
 
   @SuppressWarnings("unchecked")
