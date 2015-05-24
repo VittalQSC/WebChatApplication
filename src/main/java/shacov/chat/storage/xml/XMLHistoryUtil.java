@@ -18,8 +18,12 @@ import javax.xml.xpath.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by VittalQSC on 05.05.2015.
@@ -32,6 +36,14 @@ public final class XMLHistoryUtil {
   private static final String ID = "id";
   private static final String TEXT = "text";
   private static final String REMOVED = "removed";
+  private static final String UPDATED_AT = "updateAt";
+  private static final SimpleDateFormat SDF;
+
+  static {
+    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss Z");
+    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+    SDF = sdf;
+  }
 
   public static synchronized boolean doesStorageExist() {
     File file = new File(STORAGE_LOCATION);
@@ -89,6 +101,11 @@ public final class XMLHistoryUtil {
     removed.appendChild(document.createTextNode(messageIsRemoved));
     messageElement.appendChild(removed);
 
+    Element updated_at = document.createElement(UPDATED_AT);
+    Date messageUpdatedAt = message.getUpdatedAt();
+    updated_at.appendChild(document.createTextNode(SDF.format(messageUpdatedAt)));
+    messageElement.appendChild(updated_at);
+
     DOMSource source = new DOMSource(document);
 
     Transformer transformer = getTransformer();
@@ -114,8 +131,15 @@ public final class XMLHistoryUtil {
       String user = messageElement.getElementsByTagName(USER).item(0).getTextContent();
       String id = messageElement.getAttribute(ID);
       String text = messageElement.getElementsByTagName(TEXT).item(0).getTextContent();
+      String updateAt = messageElement.getElementsByTagName(UPDATED_AT).item(0).getTextContent();
       boolean removed = Boolean.valueOf(messageElement.getElementsByTagName(REMOVED).item(0).getTextContent());
-      messages.add(new Message(user, id, text, removed));
+      Date date;
+      try {
+        date = SDF.parse(updateAt);
+      } catch (ParseException e) {
+        date = new Date();
+      }
+      messages.add(new Message(user, id, text, removed, date));
     }
     return messages;
   }
