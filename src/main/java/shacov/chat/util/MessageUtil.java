@@ -12,13 +12,13 @@ import java.util.UUID;
  */
 public final class MessageUtil {
   public static final String TOKEN = "token";
+  public static final String LAST_MODIFIED = "lastModified";
   public static final String MESSAGES = "messages";
   private static final String TN = "TN";
   private static final String EN = "EN";
   private static final String USER = "user";
   private static final String ID = "id";
   private static final String TEXT = "text";
-  private static final String REMOVED = "removed";
 
   public static String getToken(int index) {
     Integer number = index * 8 + 11;

@@ -158,11 +158,13 @@ function updateWithScroll(update) {
 	}
 }
 
+var lastModified;
+
 function loadMessages() {
-	ajax("GET", state.mainUrl, {token: state.token}, function(data) {
+	ajax("GET", state.mainUrl, {token: state.token , lastModified : lastModified}, function(data) {
 		updateWithScroll(function() {
 			var messages = data.messages;
-
+			lastModified = data.lastModified;
 			for (var index in messages) {
 				handleMessage( messages[index] );
 			}

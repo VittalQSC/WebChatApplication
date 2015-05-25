@@ -115,10 +115,10 @@ public final class XMLHistoryUtil {
   }
 
   public static synchronized List<Message> getMessages() throws SAXException, IOException, ParserConfigurationException {
-    return getSubMessagesByIndex(0); // Return all tasks from history
+    return getSubMessagesByIndex(0,"undefined"); // Return all tasks from history
   }
 
-  public static synchronized List<Message> getSubMessagesByIndex(int index) throws ParserConfigurationException, SAXException, IOException {
+  public static synchronized List<Message> getSubMessagesByIndex(int index, String lastModified) throws ParserConfigurationException, SAXException, IOException {
     List<Message> messages = new ArrayList<>();
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -139,7 +139,9 @@ public final class XMLHistoryUtil {
       } catch (ParseException e) {
         date = new Date();
       }
-      messages.add(new Message(user, id, text, removed, date));
+      if(lastModified.compareTo("undefined") == 0 || Long.parseLong(lastModified) < date.getTime()) {
+        messages.add(new Message(user, id, text, removed, date));
+      }
     }
     return messages;
   }
@@ -171,6 +173,10 @@ public final class XMLHistoryUtil {
 
         if (REMOVED.equals(node.getNodeName())) {
           node.setTextContent(Boolean.toString(true));
+        }
+
+        if (UPDATED_AT.equals(node.getNodeName())) {
+          node.setTextContent(SDF.format(new Date()));
         }
 
       }
@@ -209,6 +215,10 @@ public final class XMLHistoryUtil {
           node.setTextContent(Boolean.toString(message.isRemoved()));
         }
 
+        if (UPDATED_AT.equals(node.getNodeName())) {
+          node.setTextContent(SDF.format(new Date()));
+        }
+
       }
 
       Transformer transformer = getTransformer();
@@ -225,5 +235,25 @@ public final class XMLHistoryUtil {
     XPath xpath = XPathFactory.newInstance().newXPath();
     XPathExpression expr = xpath.compile("//" + MESSAGE + "[@id='" + id + "']");
     return (Node) expr.evaluate(doc, XPathConstants.NODE);
+  }
+
+  public static Date getTheLatestEventDate() {
+    try {
+      List<Message> msgList = getMessages();
+      Date theLatestEventDate = null;
+      for (Message message : msgList) {
+        Date msgUpdateAt = message.getUpdatedAt();
+        if(theLatestEventDate == null || msgUpdateAt.getTime() > theLatestEventDate.getTime())
+          theLatestEventDate = msgUpdateAt;
+      }
+      return theLatestEventDate;
+    } catch (SAXException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ParserConfigurationException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 }

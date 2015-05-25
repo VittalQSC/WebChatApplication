@@ -1,6 +1,7 @@
 package shacov.chat.controller;
 
 import static shacov.chat.util.MessageUtil.TOKEN;
+import static shacov.chat.util.MessageUtil.LAST_MODIFIED;
 import static shacov.chat.util.MessageUtil.MESSAGES;
 import static shacov.chat.util.MessageUtil.getIndex;
 import static shacov.chat.util.MessageUtil.getToken;
@@ -69,12 +70,14 @@ public class ChatServlet extends HttpServlet {
     String token = request.getParameter(TOKEN);
     logger.info("Token " + token);
 
+    String lastModified = request.getParameter(LAST_MODIFIED);
+
     try {
       if (token != null && !"".equals(token)) {
         int index = getIndex(token);
         logger.info("Index " + index);
         String messages;
-        messages = formResponse(index);
+        messages = formResponse(index,lastModified);
         response.setContentType(ServletUtil.APPLICATION_JSON);
         PrintWriter out = response.getWriter();
         out.print(messages);
@@ -96,6 +99,7 @@ public class ChatServlet extends HttpServlet {
       JSONObject json = stringToJson(data);
       Message message = jsonToMessage(json);
       XMLHistoryUtil.addData(message);
+
       response.setStatus(HttpServletResponse.SC_OK);
     } catch (ParseException | ParserConfigurationException | SAXException | TransformerException e) {
       logger.error(e);
@@ -141,7 +145,7 @@ public class ChatServlet extends HttpServlet {
       if (token != null && !"".equals(token)) {
         int index = getIndex(token);
         logger.info("Index " + index);
-        List<Message> messages = XMLHistoryUtil.getSubMessagesByIndex(index);
+        List<Message> messages = XMLHistoryUtil.getSubMessagesByIndex(index,"undefined");
         for (Message message : messages) {
           long time = 1000 * message.getUpdatedAt().getTime();
           if(time > lastUpdate)
@@ -155,10 +159,11 @@ public class ChatServlet extends HttpServlet {
   }
 
   @SuppressWarnings("unchecked")
-  private String formResponse(int index) throws SAXException, IOException, ParserConfigurationException {
+  private String formResponse(int index, String lastModified) throws SAXException, IOException, ParserConfigurationException {
     JSONObject jsonObject = new JSONObject();
-    jsonObject.put(MESSAGES, XMLHistoryUtil.getSubMessagesByIndex(index));
+    jsonObject.put(MESSAGES, XMLHistoryUtil.getSubMessagesByIndex(index,lastModified));
     jsonObject.put(TOKEN, getToken(XMLHistoryUtil.getStorageSize()));
+    jsonObject.put(LAST_MODIFIED, XMLHistoryUtil.getTheLatestEventDate().getTime());
     return jsonObject.toJSONString();
   }
 
